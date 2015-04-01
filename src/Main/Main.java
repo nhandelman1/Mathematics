@@ -1,5 +1,7 @@
 package Main;
 
+import Algorithms.MiddleSquareRNG;
+import Algorithms.Utility;
 import Utilities.ConvertInfixToPostfix;
 import Utilities.EvaluatePostfix;
 import Utilities.Operand;
@@ -17,6 +19,36 @@ import java.util.Scanner;
 public final class Main {
     private static final Scanner KEYBOARD = new Scanner(System.in);
 
+    public static void main(String[] args) {
+        MiddleSquareRNG middleSquareRNG = new MiddleSquareRNG();
+        boolean success = false;
+        int seed;
+        int digits;
+
+        while(!success) {
+            try {
+                System.out.print("Enter seed: ");
+                seed = KEYBOARD.nextInt();
+                System.out.print("Enter number of digits of random number to generate (odd is incremented to next even): ");
+                digits = KEYBOARD.nextInt();
+                middleSquareRNG.reset(seed, digits);
+                success = true;
+            } catch(Exception e) {
+                System.out.println(e.getClass().getSimpleName() + ": " + e.getMessage());
+            } finally{
+                KEYBOARD.nextLine(); //flush remaining entry
+            }
+        }
+
+        System.out.println("Press enter to get random number. Enter 'exit' to quit.");
+        String s = null;
+        while(!"exit".equals(s)) {
+            s = KEYBOARD.nextLine();
+            System.out.println(middleSquareRNG.getNext());
+        }
+    }
+
+    /*
     public static void main(String[] args) {
         final ConvertInfixToPostfix citp = new ConvertInfixToPostfix();
         final EvaluatePostfix ep = new EvaluatePostfix();
@@ -63,7 +95,7 @@ public final class Main {
                 System.out.println("Error: " + e.getMessage());
             }
         } while(selection != 0);
-    }
+    } */
 
     private static Map<Operand, BigDecimal> buildVariableValueMap(List<Operand> variableList) {
         final Map<Operand, BigDecimal> variableValueMap = new HashMap<>();
